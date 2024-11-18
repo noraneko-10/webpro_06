@@ -73,7 +73,7 @@ loose --> end1
 $ node app5.js
 ```
 次に，以下のURLにアクセスすれば、この機能を利用できる．
-あっち向いてホイ: http://localhost:8080/acchimuitehoi-form
+麻雀サイコロ: http://localhost:8080/mahjong
 
 
 ### あっち向いてほい
