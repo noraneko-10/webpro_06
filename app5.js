@@ -27,11 +27,14 @@ app.get("/luck", (req, res) => {
   res.render( 'luck', {number:num, luck:luck} );
 });
 
+
+
 app.get("/janken", (req, res) => {
   let hand = req.query.hand;
   let win = Number( req.query.win )||0;
   let total = Number( req.query.total )||0;
   console.log( {hand, win, total});
+
   const num = Math.floor( Math.random() * 3 + 1 );
   let cpu = '';
   if( num==1 ) cpu = 'グー';
@@ -48,7 +51,7 @@ app.get("/janken", (req, res) => {
           judgement = '勝ち';
           win += 1;
   } 
-  else {
+ else {
     judgement = '負け';
   }
  
@@ -62,5 +65,98 @@ app.get("/janken", (req, res) => {
   }
   res.render( 'janken', display );
 });
+
+
+// フォームを表示するエンドポイント
+app.get('/mahjong', (req, res) => {
+  res.sendFile(__dirname + '/mahjong.html'); // mahjong.htmlを提供
+});
+
+// サイコロの結果を計算するエンドポイント
+app.get('/mahjong-result', (req, res) => {
+  const players = Number(req.query.radio);
+
+  // サイコロの出目（2〜12）を生成
+  const dice1 = Math.floor(Math.random() * 6) + 1;
+  const dice2 = Math.floor(Math.random() * 6) + 1;
+  const diceSum = dice1 + dice2;
+
+  // 家の決定ロジック
+  let house = '';
+  if (players === 3) {
+    if ([2, 5, 8, 11].includes(diceSum)) {
+      house = '南家';
+    } else if ([3, 6, 9, 12].includes(diceSum)) {
+      house = '西家';
+    } else {
+      house = '東家';
+    }
+  } else if (players === 4) {
+    if ([2, 6, 10].includes(diceSum)) {
+      house = '南家';
+    } else if ([3, 7, 11].includes(diceSum)) {
+      house = '西家';
+    } else if ([4, 8, 12].includes(diceSum)) {
+      house = '北家';
+    } else {
+      house = '東家';
+    }
+  } else {
+    res.send("3または4を選択してください。");
+    return;
+  }
+
+  // 結果を表示用にまとめる
+  const display = {
+    players: players,
+    dice1: dice1,
+    dice2: dice2,
+    diceSum: diceSum,
+    house: house
+  };
+
+  // 結果をテンプレートに渡してレンダリング
+  res.render('mahjong-result', display);
+});
+
+
+app.get("/acchimuitehoi", (req, res) => {
+  let direction = req.query.direction; // プレイヤーの入力方向
+  let win = Number(req.query.win) || 0; // 勝利数
+  let total = Number(req.query.total) || 0; // 試合数
+
+  // CPUのランダムな向き
+  const directions = ["上", "下", "左", "右"];
+  const cpuDirection = directions[Math.floor(Math.random() * 4)];
+
+  // 勝敗の判定
+  let judgement = "";
+  if (direction === cpuDirection) {
+    judgement = "負け";
+  } else {
+    judgement = "勝ち";
+    win += 1;
+  }
+
+  total += 1;
+
+  // 表示用データを作成
+  const display = {
+    your: direction,
+    cpu: cpuDirection,
+    judgement: judgement,
+    win: win,
+    total: total,
+  };
+
+  // レンダリング
+  res.render("acchimuitehoi", display);
+});
+
+// フォーム表示エンドポイント
+app.get("/acchimuitehoi-form", (req, res) => {
+  res.render("acchimuitehoi-form", { win: 0, total: 0 });
+});
+
 
 app.listen(8080, () => console.log("Example app listening on port 8080!"));

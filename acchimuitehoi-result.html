@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>あっち向いてホイ結果</title>
+</head>
+<body>
+    <h1>あっち向いてホイの結果</h1>
+    <p>あなたが向いた方向: <%= your %></p>
+    <p>CPUが向いた方向: <%= cpu %></p>
+    <p>判定: <%= judgement %></p>
+    <p>現在 <%= total %> 試合中 <%= win %> 勝しています。</p>
+    <hr>
+    <form action="/acchimuitehoi" method="get">
+        <label for="direction">次はどちらに向きますか？</label>
+        <select name="direction" id="direction" required>
+            <option value="上">上</option>
+            <option value="下">下</option>
+            <option value="左">左</option>
+            <option value="右">右</option>
+        </select>
+        <input type="hidden" name="win" value="<%= win %>">
+        <input type="hidden" name="total" value="<%= total %>">
+        <button type="submit">再戦！</button>
+    </form>
+</body>
+</html>
