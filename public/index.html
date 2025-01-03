@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BBS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>掲示板</h1>
+  <form id="postForm">
+    <input type="text" id="name" placeholder="あなたの名前" required>
+    <textarea id="message" placeholder="メッセージを入力してください" required></textarea>
+    <button type="submit">投稿する</button>
+  </form>
+  <input type="text" id="search" placeholder="投稿を検索する...">
+  <ul id="posts"></ul>
+  <script src="script.js"></script>
+</body>
+</html>
+
